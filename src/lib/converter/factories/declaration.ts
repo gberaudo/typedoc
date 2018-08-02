@@ -62,8 +62,7 @@ export function createDeclaration(context: Context, node: ts.Declaration, kind: 
     if (kind === ReflectionKind.ExternalModule) {
         isExported = true; // Always mark external modules as exported
     } else if (node.parent && node.parent.kind === ts.SyntaxKind.VariableDeclarationList) {
-        const parentModifiers = ts.getCombinedModifierFlags(node.parent.parent as ts.Declaration);
-        isExported = isExported || !!(parentModifiers & ts.ModifierFlags.Export);
+        isExported = isExported || ts.isExportDeclaration(node.parent.parent);
     } else {
         isExported = isExported || !!(modifiers & ts.ModifierFlags.Export);
     }
